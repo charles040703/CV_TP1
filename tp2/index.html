@@ -13,6 +13,40 @@
     .display-4 {
       text-align: center;
     }
+    .product-box{
+      display: flex;
+      /* justify-content: center; /* Centre horizontalement le conteneur .products 
+      align-items: center; 
+      */
+      /* margin-left: 5%; */
+      /* margin-right: 10%; */
+    }
+    .products{
+      outline: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      
+    }
+    .cart{
+      margin-top:8%;
+      width: 1550px; /* ou une autre valeur appropriée */
+      height: 650px;
+      outline: 10px;
+      /* display: flex; */
+      /* flex-wrap: wrap; */
+      /* align-items: right; */
+      border: 1px solid #000;
+       margin-right: 5%;
+    }
+    .products > div {
+    width: 350px; /* ou une autre valeur appropriée */
+    height: 350px; /* ou une autre valeur appropriée */
+    border: 1px solid #000; /* ajoute une bordure noire pour rendre la div visible */
+    margin: 150px; /* ajoute un peu d'espace autour de chaque div */
+    padding: 10px; /* ajoute un peu d'espace à l'intérieur de chaque div */
+    background-color: #ececec; /* couleur de fond pour chaque produit */
+    align-items: center;
+    }
   </style>
 
 <body>
@@ -20,6 +54,28 @@
     <div class="container">
       <h1 class="display-4">Shopping</h1>
       <p class="lead"></p>
+    </div>
+  </div>
+  <div class="product-box">
+    <div class="products">
+      <div id="sd"></div>
+      <div id="camera"></div>
+      <div id="lens"></div>
+      <div id="bag"></div>
+      <div id="lens2"></div>
+      <div id="bag2"></div>
+      <div id="camera2"></div>
+      <div id="sd"></div>
+      <div id="camera"></div>
+      <div id="lens"></div>
+      <div id="bag"></div>
+      <div id="lens2"></div>
+      <div id="bag2"></div>
+      <div id="camera2"></div>
+    </div>
+    <div class="cart">
+      <h1 class="display-4">CART</h1>
+
     </div>
   </div>
 <!--   
