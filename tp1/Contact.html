@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV de Charles Hurst</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
+    .profile-image {
+      max-width: 150px;
+      border-radius: 50%;
+    }
+    .profile-image {
+      max-width: 150px;
+      border-radius: 50%;
+    }
+    .sidebar {
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      padding-top: 20px;
+      background-color: #f8f9fa;
+    }
+    .content {
+      margin-left: 250px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <nav class="nav flex-column">
+        <a class="nav-link active" href="Accueil.html">Accueil</a>
+        <a class="nav-link" href="CV.html">CV</a>
+        <a class="nav-link" href="Contact.html">Contact</a>
+    </nav>
+</div>
+
+<div class="content">
+    <nav class="navbar navbar-light bg-light d-flex justify-content-center">
+        <h1><span class="navbar-brand mb-10">Charles Hurst & Anase Mezouari</span></h1>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="col-md-12">
+        <h2>Contact</h2>
+        <form>
+          <div class="form-group">
+            <label for="name">Nom Prénom</label>
+            <input type="text" class="form-control" id="name">
+          </div>
+          <div class="form-group">
+            <label for="email">Adresse email</label>
+            <input type="email" class="form-control" id="email">
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea class="form-control" id="message" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.7.9/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</html>
