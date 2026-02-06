@@ -7,13 +7,14 @@ LAMBDA_NAME="EC2Manager"
 STAGE="prod"
 PORT="4566"
 
-# GitHub Codespaces fournit ces variables automatiquement.[web:32][web:39]
-CODESPACE_NAME="${CODESPACE_NAME:-solid-spoon-q45r49vj6435xr}"  # fallback pour tests
+# GitHub Codespaces : variables dynamiques fournies automatiquement
+CODESPACE_NAME="${CODESPACE_NAME:-$(hostname)}"
 DOMAIN="${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-app.github.dev}"
-
-# Host externe de LocalStack (porte 4566 exposée)
 HOST_DOMAIN="${CODESPACE_NAME}-${PORT}.${DOMAIN}"
 
+echo "🚀 Déploiement avec Codespace: ${HOST_DOMAIN}"
+
+# Nettoyage...
 echo "--- Nettoyage ---"
 awslocal lambda delete-function --function-name "$LAMBDA_NAME" 2>/dev/null || true
 
@@ -22,10 +23,10 @@ EXISTING_API_ID=$(awslocal apigateway get-rest-apis \
   --query "items[?name=='$API_NAME'].id" \
   --output text 2>/dev/null || echo "None")
 
-if [ "$EXISTING_API_ID" != "None" ] && [ -n "$EXISTING_API_ID" ]; then
+[ "$EXISTING_API_ID" != "None" ] && [ -n "$EXISTING_API_ID" ] && \
   awslocal apigateway delete-rest-api --rest-api-id "$EXISTING_API_ID" --region "$REGION"
-fi
 
+# EC2
 echo "--- Création de l'EC2 ---"
 INSTANCE_ID=$(awslocal ec2 run-instances \
   --region "$REGION" \
@@ -36,9 +37,9 @@ INSTANCE_ID=$(awslocal ec2 run-instances \
   --output text)
 echo "Instance ID: $INSTANCE_ID"
 
+# Lambda
 echo "--- Création de la Lambda ---"
 zip -q function.zip lambda_function.py
-
 awslocal lambda create-function \
   --region "$REGION" \
   --function-name "$LAMBDA_NAME" \
@@ -49,6 +50,7 @@ awslocal lambda create-function \
   --timeout 10 \
   --environment "Variables={INSTANCE_ID=$INSTANCE_ID}"
 
+# API Gateway
 echo "--- Création de l'API Gateway REST ---"
 API_ID=$(awslocal apigateway create-rest-api \
   --region "$REGION" \
@@ -63,6 +65,7 @@ PARENT_ID=$(awslocal apigateway get-resources \
   --output text)
 
 for action in start stop status; do
+  echo "  Création /$action..."
   RES_ID=$(awslocal apigateway create-resource \
     --region "$REGION" \
     --rest-api-id "$API_ID" \
@@ -104,11 +107,16 @@ for action in start stop status; do
     >/dev/null 2>&1 || true
 done
 
+# ✅ URLs DYNAMIQUES (copier-coller directement)
 BASE_URL="https://${HOST_DOMAIN}/restapis/${API_ID}/${STAGE}/_user_request_"
 
 echo "------------------------------------------------"
-echo "Voici un exemple des 3 URL de pilotage de votre instance EC2 :"
-echo "${BASE_URL}/start"
-echo "${BASE_URL}/stop"
-echo "${BASE_URL}/status"
+echo "✅ Déploiement terminé ! Instance: $INSTANCE_ID"
+echo ""
+echo "Voici les 3 URL de pilotage de votre instance EC2 :"
+echo "🔴 START  : ${BASE_URL}/start"
+echo "🟡 STATUS : ${BASE_URL}/status" 
+echo "🟢 STOP   : ${BASE_URL}/stop"
+echo ""
+echo "💡 Testez avec : curl \"${BASE_URL}/status\""
 echo "------------------------------------------------"
