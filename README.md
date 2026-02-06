@@ -64,3 +64,11 @@ curl "http://localhost:4566/restapis/<ID_API>/prod/_user_request_/control?action
 Vérification du statut (CLI) :
 ```
 awslocal ec2 describe-instances --query 'Reservations[0].Instances[0].State.Name'
+
+```
+---
+
+## 💡 Choix Techniques
+
+### Communication Inter-Services (DNS)
+La Lambda utilise l'URL `http://localhost.localstack.cloud:4566`. Ce choix est crucial : à l'intérieur d'un conteneur Lambda, `localhost` désigne le conteneur lui-même. En utilisant le nom d'hôte DNS de LocalStack, on permet à la fonction de communiquer correctement avec les autres services simulés (EC2).
