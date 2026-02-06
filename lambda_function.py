@@ -2,25 +2,24 @@ import boto3
 import os
 
 def lambda_handler(event, context):
-    ec2 = boto3.client('ec2', endpoint_url=os.environ['AWS_ENDPOINT_URL'])
+    endpoint = os.environ.get('AWS_ENDPOINT', 'http://localhost.localstack.cloud:4566')
+    ec2 = boto3.client('ec2', endpoint_url=endpoint)
+    instance_id = os.environ.get('INSTANCE_ID')
     
-    # On récupère l'action (start/stop) depuis la requête (query string)
-    action = event.get('queryStringParameters', {}).get('action', 'status')
-    instance_id = event.get('queryStringParameters', {}).get('instance_id')
+    # On récupère le chemin de la requête (ex: /start, /stop, /status)
+    path = event.get('path', '')
     
-    if not instance_id:
-        return {'statusCode': 400, 'body': 'Missing instance_id'}
-
-    if action == 'start':
+    if 'start' in path:
         ec2.start_instances(InstanceIds=[instance_id])
-        message = f"Instance {instance_id} démarrée."
-    elif action == 'stop':
+        msg = f"Instance {instance_id} démarrée"
+    elif 'stop' in path:
         ec2.stop_instances(InstanceIds=[instance_id])
-        message = f"Instance {instance_id} arrêtée."
+        msg = f"Instance {instance_id} arrêtée"
     else:
-        message = "Action inconnue. Utilisez action=start ou action=stop."
+        status = ec2.describe_instances(InstanceIds=[instance_id])['Reservations'][0]['Instances'][0]['State']['Name']
+        msg = f"Statut de l'instance {instance_id} : {status}"
 
     return {
         'statusCode': 200,
-        'body': message
+        'body': msg
     }
