@@ -60,3 +60,7 @@ Une fois le script terminé, vous pouvez piloter l'instance avec une commande `c
 ### Arrêter l'instance :
 ```bash
 curl "http://localhost:4566/restapis/<ID_API>/prod/_user_request_/control?action=stop&instance_id=<ID_INSTANCE>"
+```
+Vérification du statut (CLI) :
+```
+awslocal ec2 describe-instances --query 'Reservations[0].Instances[0].State.Name'
