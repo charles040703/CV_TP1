@@ -26,20 +26,24 @@ Accès Externe : Port Forwarding GitHub Codespaces
 Bash
 
 # Installation de l'AWS CLI v2 et de awslocal
+```
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip && sudo ./aws/install
 pip install awscli-local
+```
 2. Lancement de LocalStack
 Bash
-
+```
 localstack start -d
+```
 3. Déploiement Automatisé
 J'ai conçu un script deploy_aws.sh qui automatise 100% du provisionnement (nettoyage, création EC2, packaging Lambda, routes API Gateway) :
 
 Bash
-
+```
 chmod +x deploy_aws.sh
 ./deploy_aws.sh
+```
 🔍 Tests et Pilotage (URLs de Démonstration)
 Grâce au port forwarding de GitHub, l'API est accessible publiquement via les endpoints suivants (remplacer les IDs par ceux générés par le script) :
 
