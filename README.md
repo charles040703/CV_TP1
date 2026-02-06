@@ -50,3 +50,13 @@ Bash
 chmod +x deploy_aws.sh
 ./deploy_aws.sh
 ```
+
+---
+
+## 🔍 Test et Vérification
+
+Une fois le script terminé, vous pouvez piloter l'instance avec une commande `curl` :
+
+### Arrêter l'instance :
+```bash
+curl "http://localhost:4566/restapis/<ID_API>/prod/_user_request_/control?action=stop&instance_id=<ID_INSTANCE>"
